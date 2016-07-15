@@ -33,11 +33,12 @@ if [[ -n $AWS_STS_ROLE || -n $AWS_STS_ACCOUNT ]]; then
 fi
 
 # fetching aws docker login
-echo "Logging into AWS ECR"
 if [ -f /opt/docker/config.json ]; then
+    echo "Setting previous AWS ECR login"
     mkdir -p ~/.docker
     cp /opt/docker/config.json ~/.docker/config.json
 else
+    echo "Logging into AWS ECR"
     $(aws ecr get-login)
     cp ~/.docker/config.json /opt/docker/config.json
 fi

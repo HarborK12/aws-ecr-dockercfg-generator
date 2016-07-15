@@ -34,10 +34,15 @@ fi
 
 # fetching aws docker login
 echo "Logging into AWS ECR"
-$(aws ecr get-login)
+if [ -f /opt/docker/config.json ]; then
+    mkdir -p ~/.docker
+    cp /opt/docker/config.json ~/.docker/config.json
+else
+    $(aws ecr get-login)
+    cp ~/.docker/config.json /opt/docker/config.json
+fi
 
 # writing aws docker creds to desired path
 echo "Writing Docker creds to $1"
 chmod 544 ~/.docker/config.json
 cp ~/.docker/config.json $1
-
